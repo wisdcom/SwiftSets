@@ -4,9 +4,10 @@
 import Foundation
 
 public struct Set<T: Hashable> : Equatable {
+	
     typealias Element = T
-    private var contents: [Element: Bool]
-
+    private var contents: Dictionary<Element, Bool>
+	
     // Create an empty Set.
     public init() {
         self.contents = [:]
@@ -83,6 +84,7 @@ public struct Set<T: Hashable> : Equatable {
 // MARK: SequenceType
 
 extension Set : SequenceType {
+	
     typealias Generator = GeneratorOf<T>
 
     /// Creates a generator for the items of the set.
@@ -97,6 +99,7 @@ extension Set : SequenceType {
 // MARK: ArrayLiteralConvertible
 
 extension Set : ArrayLiteralConvertible {
+	
     public init(arrayLiteral elements: Element...) {
         self.init(elements)
     }
@@ -105,6 +108,7 @@ extension Set : ArrayLiteralConvertible {
 // MARK: Set Operations
 
 extension Set {
+	
     /// Returns `true` if the Set has the exact same members as `set`.
     public func isEqualToSet(set: Set<T>) -> Bool {
         return self.contents == set.contents
@@ -177,6 +181,7 @@ extension Set {
 // MARK: ExtensibleCollectionType
 
 extension Set : ExtensibleCollectionType {
+	
     typealias Index = SetIndex<T>
     public var startIndex: Index { return SetIndex(contents.startIndex) }
     public var endIndex: Index { return SetIndex(contents.endIndex) }
@@ -204,6 +209,7 @@ extension Set : ExtensibleCollectionType {
 // MARK: Printable
 
 extension Set : Printable, DebugPrintable {
+	
     public var description: String {
         return "Set(\(self.elements))"
     }
@@ -231,9 +237,12 @@ public func ==<T>(lhs: Set<T>, rhs: Set<T>) -> Bool {
     return lhs.isEqualToSet(rhs)
 }
 
+
 // MARK: - SetIndex
 
+
 public struct SetIndex<T: Hashable> : BidirectionalIndexType {
+	
     private var index: DictionaryIndex<T, Bool>
     private init(_ dictionaryIndex: DictionaryIndex<T, Bool>) {
         self.index = dictionaryIndex
