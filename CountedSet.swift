@@ -6,7 +6,7 @@ import Foundation
 public struct CountedSet<T: Hashable> : Equatable {
 	
 	typealias Element = T
-	private var contents: Dictionary<Element, Bool>
+	private var contents: Dictionary<Element, Int>
 	
 	// Create an empty Set.
 	public init() {
@@ -16,7 +16,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	// Create a Set from the given sequence.
 	public init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
 		self.contents = [:]
-		Swift.map(sequence) { self.contents[$0] = true }
+		Swift.map(sequence) { self.add($0) }
 	}
 	
 	// Create an empty Set while reserving capacity for at least `minimumCapacity` elements.
@@ -35,7 +35,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Returns `true` if the Set contains `element`.
 	public func contains(element: Element) -> Bool {
-		return contents[element] ?? false
+		return contents[element] > 0 // TODO: !
 	}
 	
 	/// `true` if the Set contains `element`, `false` otherwise.
@@ -45,14 +45,14 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Add a single `newElement` to the Set.
 	public mutating func add(newElement: Element) {
-		self.contents[newElement] = true
+		self.contents[newElement] = 1 // TODO: !
 	}
 	
 	/// Add multiple `newElements` to the Set.
 	public mutating func add(newElement: Element, _ anotherNewElement: Element, _ otherNewElements: Element...) {
 		add(newElement)
 		add(anotherNewElement)
-		otherNewElements.map { self.contents[$0] = true }
+		otherNewElements.map { self.add($0) }
 	}
 	
 	/// Remove `element` from the Set.
@@ -62,7 +62,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Removes all elements from the Set.
 	public mutating func removeAll() {
-		contents = [Element: Bool]()
+		contents = [Element: Int]()
 	}
 	
 	/// Returns a new Set including only those elements `x` where `includeElement(x)` is true.
@@ -202,7 +202,7 @@ extension CountedSet : ExtensibleCollectionType {
 	
 	/// Extends the Set by adding all the elements of `seq`.
 	public mutating func extend<S : SequenceType where S.Generator.Element == Element>(seq: S) {
-		Swift.map(seq) { self.contents[$0] = true }
+		Swift.map(seq) { self.add($0) }
 	}
 }
 
@@ -243,8 +243,8 @@ public func ==<T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
 
 public struct CountedSetIndex<T: Hashable> : BidirectionalIndexType {
 	
-	private var index: DictionaryIndex<T, Bool>
-	private init(_ dictionaryIndex: DictionaryIndex<T, Bool>) {
+	private var index: DictionaryIndex<T, Int>
+	private init(_ dictionaryIndex: DictionaryIndex<T, Int>) {
 		self.index = dictionaryIndex
 	}
 	public func predecessor() -> CountedSetIndex<T> {
