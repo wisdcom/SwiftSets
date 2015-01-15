@@ -1,15 +1,19 @@
-// SetTests.swift
+// CountedSetTests.swift
 // Copyright (c) 2014 Nate Cook, licensed under the MIT License
 
 import UIKit
 import XCTest
 
+
 // MARK: - Tests
-class SetTests : XCTestCase {
+
+
+class CountedSetTests: XCTestCase {
+	
 	func testOriginalTests() {
-		let vowelSet = Set("aeiou")
-		let alphabetSet : Set<Character> = Set(elements: "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
-		let emptySet = Set<Int>()
+		let vowelSet = CountedSet("aeiou")
+		let alphabetSet : CountedSet<Character> = CountedSet(elements: "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
+		let emptySet = CountedSet<Int>()
 		
 		XCTAssert(vowelSet.isSubsetOfSet(alphabetSet) == true)
 		XCTAssert(vowelSet.isSupersetOfSet(alphabetSet) == false)
@@ -23,7 +27,7 @@ class SetTests : XCTestCase {
 		XCTAssert(mutableVowelSet.count == 5)
 		mutableVowelSet += "y"
 		XCTAssert(mutableVowelSet.count == 6)
-		mutableVowelSet += Set(elements: "å","á","â","ä","à","é","ê","è","ë","í","î","ï","ì","ø","ó","ô","ö","ò","ú","û","ü","ù")
+		mutableVowelSet += CountedSet(elements: "å","á","â","ä","à","é","ê","è","ë","í","î","ï","ì","ø","ó","ô","ö","ò","ú","û","ü","ù")
 		
 		XCTAssert(mutableVowelSet.intersectsWithSet(alphabetSet) == true)
 		XCTAssert(mutableVowelSet.isSubsetOfSet(alphabetSet) == false)
@@ -47,6 +51,7 @@ class SetTests : XCTestCase {
 		println("All tests passed.")
 		println()
 	}
+	
 	func testTiming() {
 		func timeBlock(block: () -> Int) -> (Int, NSTimeInterval) {
 			let start = NSDate()
@@ -54,7 +59,7 @@ class SetTests : XCTestCase {
 			return (result, NSDate().timeIntervalSinceDate(start))
 		}
 		
-		var timedSet = Set<Int>()
+		var timedSet = CountedSet<Int>()
 		var timedArray = Array<Int>()
 		let timedSize = 1_000
 		
@@ -115,8 +120,8 @@ class SetTests : XCTestCase {
 		*/
 		
 		let setSize = 100_000
-		var bigSet = Set(1...setSize)
-		let anotherBigSet = Set(1...setSize)
+		var bigSet = CountedSet(1...setSize)
+		let anotherBigSet = CountedSet(1...setSize)
 		let setEquality = { () -> Int in
 			return bigSet == anotherBigSet ? 1 : 0
 		}
@@ -138,8 +143,9 @@ class SetTests : XCTestCase {
 		Checked equality (false) on same-size unequal big sets in 0.908538997173309
 		*/
 	}
+	
 	func testAnyObject() {
-		var emptySet : Set<String> = Set<String>()
+		var emptySet : CountedSet<String> = CountedSet<String>()
 		XCTAssert(emptySet.anyElement() == nil)
 		emptySet += "a"
 		XCTAssert(emptySet.anyElement() == "a")
@@ -147,7 +153,4 @@ class SetTests : XCTestCase {
 }
 
 
-
 // MARK: - Timing
-
-
