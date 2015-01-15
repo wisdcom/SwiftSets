@@ -70,7 +70,7 @@ class CountedSetTests: XCTestCase {
 			}
 			return timedSet.count
 		}
-		println("Set added \(setCreatedCount) unique elements in \(setCreatedTime).")
+		println("CountedSet added \(setCreatedCount) unique elements in \(setCreatedTime).")
 		
 		let (setMatchedCount, setMatchedTime) = timeBlock {
 			var matchCount = 0
@@ -82,7 +82,7 @@ class CountedSetTests: XCTestCase {
 			}
 			return matchCount
 		}
-		println("Set matched \(setMatchedCount) times out of \(timedSize) in \(setMatchedTime).")
+		println("CountedSet matched \(setMatchedCount) times out of \(timedSize) in \(setMatchedTime).")
 		
 		let (arrayCreatedCount, arrayCreatedTime) = timeBlock {
 			for _ in 1...timedSize {
@@ -106,8 +106,28 @@ class CountedSetTests: XCTestCase {
 		println("Array matched \(arrayMatchedCount) times out of \(timedSize) in \(arrayMatchedTime).")
 		
 		println()
-		println("Array \(Int(setCreatedTime / arrayCreatedTime))x faster at creation than Set.")
-		println("Set \(Int(arrayMatchedTime / setMatchedTime))x faster at lookup than Array.")
+		println("Array \(Int(setCreatedTime / arrayCreatedTime))x faster at creation than CountedSet.")
+		println("CountedSet \(Int(arrayMatchedTime / setMatchedTime))x faster at lookup than Array.")
+		
+		
+		/*
+		CountedSet added 634 unique elements in 0.0123220086097717.
+		CountedSet matched 653 times out of 1000 in 0.00595200061798096.
+		Array added 1000 elements in 0.00509095191955566.
+		Array matched 625 times out of 1000 in 1.80631500482559.
+		
+		Array 2x faster at creation than CountedSet.
+		CountedSet 303x faster at lookup than Array.
+		
+		
+		Set added 644 unique elements in 0.0131829977035522.
+		Set matched 661 times out of 1000 in 0.00484997034072876.
+		Array added 1000 elements in 0.00488603115081787.
+		Array matched 611 times out of 1000 in 1.76686799526215.
+		
+		Array 2x faster at creation than Set.
+		Set 364x faster at lookup than Array.
+		*/
 		
 		/*
 		Set added 637 unique elements in 1.2172309756279.
@@ -136,6 +156,16 @@ class CountedSetTests: XCTestCase {
 		println("Checked equality (\(equalComparison == 1)) on equal big sets in \(equalComparisonTime)")
 		println("Checked equality (\(offsetComparison == 1)) on different-size big sets in \(offsetComparisonTime)")
 		println("Checked equality (\(unequalComparison == 1)) on same-size unequal big sets in \(unequalComparisonTime)")
+		
+		/*
+		Checked equality (true) on equal big sets in 0.97138899564743
+		Checked equality (false) on different-size big sets in 3.03983688354492e-06
+		Checked equality (false) on same-size unequal big sets in 0.678294956684113
+		
+		Checked equality (true) on equal big sets in 0.935158014297485
+		Checked equality (false) on different-size big sets in 2.02655792236328e-06
+		Checked equality (false) on same-size unequal big sets in 0.629329025745392
+		*/
 		
 		/*
 		Checked equality (true) on equal big sets in 0.923960983753204
