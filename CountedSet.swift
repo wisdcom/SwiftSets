@@ -40,7 +40,12 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Returns `true` if the Set contains `element`.
 	public func contains(element: Element) -> Bool {
-		return contents[element] > 0 // TODO: !
+		return contents[element] != nil
+	}
+	
+	/// Returns the count for an element, 0 if not present.
+	public func countForElement(element: Element) -> Int {
+		return contents[element] ?? 0
 	}
 	
 	/// `true` if the Set contains `element`, `false` otherwise.
@@ -50,7 +55,11 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Add a single `newElement` to the Set.
 	public mutating func add(newElement: Element) {
-		self.contents[newElement] = 1 // TODO: !
+		if self.contains(newElement) {
+			contents[newElement]! += 1
+		} else {
+			contents[newElement] = 1
+		}
 	}
 	
 	/// Add multiple `newElements` to the Set.
@@ -61,8 +70,22 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Remove `element` from the Set.
-	public mutating func remove(element: Element) -> Element? {
-		return contents.removeValueForKey(element) != nil ? element : nil
+	public mutating func remove(element: Element, always: Bool = false) -> Element? {
+		if always {
+			return self.contents.removeValueForKey(element) != nil ? element : nil
+		}
+		
+		if self.contains(element) {
+			contents[element]! -= 1
+			
+			if contents[element]! == 0 {
+				contents.removeValueForKey(element)
+			}
+			return element
+			
+		} else {
+			return nil
+		}
 	}
 	
 	/// Removes all elements from the Set.
@@ -155,9 +178,9 @@ extension CountedSet {
 	}
 	
 	/// Modifies the Set to remove any members also in `set`.
-	public mutating func subtractSet(set: CountedSet<T>) {
+	public mutating func subtractSet(set: CountedSet<T>, alwaysRemove: Bool = false) {
 		for elem in set {
-			self.remove(elem)
+			self.remove(elem, always: alwaysRemove)
 		}
 	}
 	
@@ -179,9 +202,9 @@ extension CountedSet {
 	}
 	
 	/// Returns a new Set that contains only the elements in this set *not* also in the set passed in.
-	public func setBySubtractingSet(set: CountedSet<T>) -> CountedSet<T> {
+	public func setBySubtractingSet(set: CountedSet<T>, alwaysRemove: Bool = false) -> CountedSet<T> {
 		var newSet = self
-		newSet.subtractSet(set)
+		newSet.subtractSet(set, alwaysRemove: alwaysRemove)
 		return newSet
 	}
 }
@@ -219,7 +242,7 @@ extension CountedSet : ExtensibleCollectionType {
 extension CountedSet : Printable, DebugPrintable {
 	
 	public var description: String {
-		return "Set(\(self.elements))"
+		return "CountedSet(\(self.elements))"
 	}
 	
 	public var debugDescription: String {
