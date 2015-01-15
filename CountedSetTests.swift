@@ -25,6 +25,34 @@ class CountedSetTests: XCTestCase {
 		var mutableVowelSet = vowelSet
 		mutableVowelSet.add("a")
 		XCTAssert(mutableVowelSet.count == 5)
+		
+		// for the "counted" part of CountedSet
+		XCTAssert(mutableVowelSet.countForElement("i") == 1)
+		mutableVowelSet.add("i")
+		XCTAssert(mutableVowelSet.countForElement("i") == 2)
+		mutableVowelSet.add("i")
+		XCTAssert(mutableVowelSet.countForElement("i") == 3)
+		mutableVowelSet.remove("i")
+		XCTAssert(mutableVowelSet.countForElement("i") == 2)
+		mutableVowelSet.remove("i")
+		XCTAssert(mutableVowelSet.countForElement("i") == 1)
+		mutableVowelSet.remove("i")
+		XCTAssert(mutableVowelSet.countForElement("i") == 0)
+		XCTAssert(mutableVowelSet.contains("i") == false)
+		mutableVowelSet.add("i")
+		//
+		XCTAssert(mutableVowelSet.countForElement("o") == 1)
+		mutableVowelSet.add("o")
+		XCTAssert(mutableVowelSet.countForElement("o") == 2)
+		mutableVowelSet.add("o")
+		XCTAssert(mutableVowelSet.countForElement("o") == 3)
+		mutableVowelSet.remove("o", always: true)
+		XCTAssert(mutableVowelSet.countForElement("o") == 0)
+		mutableVowelSet.remove("o")
+		XCTAssert(mutableVowelSet.countForElement("o") == 0)
+		XCTAssert(mutableVowelSet.contains("o") == false)
+		mutableVowelSet.add("o")
+		
 		mutableVowelSet += "y"
 		XCTAssert(mutableVowelSet.count == 6)
 		mutableVowelSet += CountedSet(elements: "å","á","â","ä","à","é","ê","è","ë","í","î","ï","ì","ø","ó","ô","ö","ò","ú","û","ü","ù")
@@ -111,22 +139,25 @@ class CountedSetTests: XCTestCase {
 		
 		
 		/*
-		CountedSet added 634 unique elements in 0.0123220086097717.
-		CountedSet matched 653 times out of 1000 in 0.00595200061798096.
-		Array added 1000 elements in 0.00509095191955566.
-		Array matched 625 times out of 1000 in 1.80631500482559.
+		## WPK
 		
-		Array 2x faster at creation than CountedSet.
-		CountedSet 303x faster at lookup than Array.
+		### CountedSet:
+		CountedSet added 637 unique elements in 0.0188900232315063.
+		CountedSet matched 634 times out of 1000 in 0.00601595640182495.
+		Array added 1000 elements in 0.00498300790786743.
+		Array matched 626 times out of 1000 in 1.68466699123383.
 		
+		Array 3x faster at creation than CountedSet.
+		CountedSet 280x faster at lookup than Array.
 		
-		Set added 644 unique elements in 0.0131829977035522.
-		Set matched 661 times out of 1000 in 0.00484997034072876.
-		Array added 1000 elements in 0.00488603115081787.
-		Array matched 611 times out of 1000 in 1.76686799526215.
+		### Set:
+		Set added 634 unique elements in 0.0112369656562805.
+		Set matched 642 times out of 1000 in 0.00523895025253296.
+		Array added 1000 elements in 0.00477802753448486.
+		Array matched 623 times out of 1000 in 1.66197401285172.
 		
 		Array 2x faster at creation than Set.
-		Set 364x faster at lookup than Array.
+		Set 317x faster at lookup than Array.
 		*/
 		
 		/*
@@ -158,13 +189,17 @@ class CountedSetTests: XCTestCase {
 		println("Checked equality (\(unequalComparison == 1)) on same-size unequal big sets in \(unequalComparisonTime)")
 		
 		/*
-		Checked equality (true) on equal big sets in 0.97138899564743
-		Checked equality (false) on different-size big sets in 3.03983688354492e-06
-		Checked equality (false) on same-size unequal big sets in 0.678294956684113
+		## WPK
 		
-		Checked equality (true) on equal big sets in 0.935158014297485
-		Checked equality (false) on different-size big sets in 2.02655792236328e-06
-		Checked equality (false) on same-size unequal big sets in 0.629329025745392
+		### CountedSet:
+		Checked equality (true) on equal big sets in 0.886638045310974
+		Checked equality (false) on different-size big sets in 1.96695327758789e-06
+		Checked equality (false) on same-size unequal big sets in 0.606709003448486
+		
+		### Set:
+		Checked equality (true) on equal big sets in 0.907741010189056
+		Checked equality (false) on different-size big sets in 1.96695327758789e-06
+		Checked equality (false) on same-size unequal big sets in 0.633270025253296
 		*/
 		
 		/*
@@ -174,7 +209,7 @@ class CountedSetTests: XCTestCase {
 		*/
 	}
 	
-	func testAnyObject() {
+	func testAnyElement() {
 		var emptySet : CountedSet<String> = CountedSet<String>()
 		XCTAssert(emptySet.anyElement() == nil)
 		emptySet += "a"

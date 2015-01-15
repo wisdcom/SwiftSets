@@ -138,7 +138,7 @@ class SetTests : XCTestCase {
         Checked equality (false) on same-size unequal big sets in 0.908538997173309
         */
     }
-    func testAnyObject() {
+    func testAnyElement() {
         var emptySet : Set<String> = Set<String>()
         XCTAssert(emptySet.anyElement() == nil)
         emptySet += "a"
