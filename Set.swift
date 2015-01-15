@@ -3,8 +3,7 @@
 
 import Foundation
 
-public struct Set<T: Hashable> : Equatable {
-	
+public struct Set<T: Hashable> : Equatable, ArrayLiteralConvertible {
     typealias Element = T
     private var contents: Dictionary<Element, Bool>
 	
@@ -17,6 +16,11 @@ public struct Set<T: Hashable> : Equatable {
     public init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
         self.contents = [:]
         Swift.map(sequence) { self.contents[$0] = true }
+    }
+    
+    public init(objects: Element...) {
+        self.init()
+        objects.map { self.contents[$0] = true }
     }
 
     // Create an empty Set while reserving capacity for at least `minimumCapacity` elements.
@@ -79,6 +83,9 @@ public struct Set<T: Hashable> : Equatable {
     public func reduce<U>(var initial: U, combine: (U, T) -> U) -> U {
         return Swift.reduce(self, initial, combine)
     }
+    
+    /// Returns an element from the set, likely the first.
+    public func anyObject() -> Element? { return elements.first }
 }
 
 // MARK: SequenceType
