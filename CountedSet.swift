@@ -4,8 +4,8 @@
 import Foundation
 
 public struct CountedSet<T: Hashable> : Equatable {
-	
 	typealias Element = T
+	
 	private var contents: Dictionary<Element, Int>
 	
 	// Create an empty Set.
@@ -17,6 +17,11 @@ public struct CountedSet<T: Hashable> : Equatable {
 	public init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
 		self.contents = [:]
 		Swift.map(sequence) { self.add($0) }
+	}
+	
+	public init(elements: Element...) {
+		self.init()
+		elements.map { self.add($0) }
 	}
 	
 	// Create an empty Set while reserving capacity for at least `minimumCapacity` elements.
@@ -79,6 +84,9 @@ public struct CountedSet<T: Hashable> : Equatable {
 	public func reduce<U>(var initial: U, combine: (U, T) -> U) -> U {
 		return Swift.reduce(self, initial, combine)
 	}
+	
+	/// Returns an element from the set, likely the first.
+	public func anyElement() -> Element? { return elements.first }
 }
 
 // MARK: SequenceType
