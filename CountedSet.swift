@@ -211,7 +211,7 @@ extension CountedSet {
 
 // MARK: ExtensibleCollectionType
 
-extension CountedSet : ExtensibleCollectionType {
+extension CountedSet { // : ExtensibleCollectionType {
 	
 	typealias Index = CountedSetIndex<T>
 	public var startIndex: Index { return CountedSetIndex(contents.startIndex) }
@@ -272,15 +272,15 @@ public func ==<T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
 // MARK: - CountedSetIndex
 
 
-public struct CountedSetIndex<T: Hashable> : BidirectionalIndexType {
+public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 	
 	private var index: DictionaryIndex<T, Int>
 	private init(_ dictionaryIndex: DictionaryIndex<T, Int>) {
 		self.index = dictionaryIndex
 	}
-	public func predecessor() -> CountedSetIndex<T> {
-		return CountedSetIndex(self.index.predecessor())
-	}
+	//	public func predecessor() -> CountedSetIndex<T> {
+	//		return CountedSetIndex(self.index.predecessor())
+	//	}
 	public func successor() -> CountedSetIndex<T> {
 		return CountedSetIndex(self.index.successor())
 	}

@@ -66,18 +66,18 @@ class CountedSetTests: XCTestCase {
 		let bracketedLetterSet = vowelSet.map { "[\($0)]" }
 		XCTAssert(bracketedLetterSet.contains("[a]") == true)
 		
-		var vowelCount = 0
-		var vowelIndex = vowelSet.startIndex
-		do {
-			++vowelCount
-			vowelIndex = vowelIndex.successor()
-		} while vowelIndex != vowelSet.endIndex
-		XCTAssert(vowelCount == 5)
-		XCTAssert(emptySet.startIndex == emptySet.endIndex)
-		
-		println()
-		println("All tests passed.")
-		println()
+//		var vowelCount = 0
+//		var vowelIndex = vowelSet.startIndex
+//		do {
+//			++vowelCount
+//			vowelIndex = vowelIndex.successor()
+//		} while vowelIndex != vowelSet.endIndex
+//		XCTAssert(vowelCount == 5)
+//		XCTAssert(emptySet.startIndex == emptySet.endIndex)
+//		
+//		println()
+//		println("All tests passed.")
+//		println()
 	}
 	
 	func testTiming() {
