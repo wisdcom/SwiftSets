@@ -98,7 +98,7 @@ class CountedSetTests: XCTestCase {
 			}
 			return timedSet.count
 		}
-		println("CountedSet added \(setCreatedCount) unique elements in \(setCreatedTime).")
+		print("CountedSet added \(setCreatedCount) unique elements in \(setCreatedTime).")
 		
 		let (setMatchedCount, setMatchedTime) = timeBlock {
 			var matchCount = 0
@@ -110,7 +110,7 @@ class CountedSetTests: XCTestCase {
 			}
 			return matchCount
 		}
-		println("CountedSet matched \(setMatchedCount) times out of \(timedSize) in \(setMatchedTime).")
+		print("CountedSet matched \(setMatchedCount) times out of \(timedSize) in \(setMatchedTime).")
 		
 		let (arrayCreatedCount, arrayCreatedTime) = timeBlock {
 			for _ in 1...timedSize {
@@ -119,23 +119,23 @@ class CountedSetTests: XCTestCase {
 			}
 			return timedArray.count
 		}
-		println("Array added \(arrayCreatedCount) elements in \(arrayCreatedTime).")
+		print("Array added \(arrayCreatedCount) elements in \(arrayCreatedTime).")
 		
 		let (arrayMatchedCount, arrayMatchedTime) = timeBlock {
 			var matchCount = 0
 			for _ in 1...timedSize {
 				let num = Int(arc4random_uniform(UInt32(timedSize)))
-				if contains(timedArray, num) {
+				if timedArray.contains(num) {
 					++matchCount
 				}
 			}
 			return matchCount
 		}
-		println("Array matched \(arrayMatchedCount) times out of \(timedSize) in \(arrayMatchedTime).")
+		print("Array matched \(arrayMatchedCount) times out of \(timedSize) in \(arrayMatchedTime).")
 		
-		println()
-		println("Array \(Int(setCreatedTime / arrayCreatedTime))x faster at creation than CountedSet.")
-		println("CountedSet \(Int(arrayMatchedTime / setMatchedTime))x faster at lookup than Array.")
+		print("")
+		print("Array \(Int(setCreatedTime / arrayCreatedTime))x faster at creation than CountedSet.")
+		print("CountedSet \(Int(arrayMatchedTime / setMatchedTime))x faster at lookup than Array.")
 		
 		
 		/*
@@ -183,10 +183,10 @@ class CountedSetTests: XCTestCase {
 		bigSet.add(setSize + 1)
 		let (unequalComparison, unequalComparisonTime) = timeBlock(setEquality)
 		
-		println()
-		println("Checked equality (\(equalComparison == 1)) on equal big sets in \(equalComparisonTime)")
-		println("Checked equality (\(offsetComparison == 1)) on different-size big sets in \(offsetComparisonTime)")
-		println("Checked equality (\(unequalComparison == 1)) on same-size unequal big sets in \(unequalComparisonTime)")
+		print("")
+		print("Checked equality (\(equalComparison == 1)) on equal big sets in \(equalComparisonTime)")
+		print("Checked equality (\(offsetComparison == 1)) on different-size big sets in \(offsetComparisonTime)")
+		print("Checked equality (\(unequalComparison == 1)) on same-size unequal big sets in \(unequalComparisonTime)")
 		
 		/*
 		## WPK

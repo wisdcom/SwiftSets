@@ -4,7 +4,7 @@
 import Foundation
 
 public struct CountedSet<T: Hashable> : Equatable {
-	typealias Element = T
+	public typealias Element = T
 	
 	private var contents: Dictionary<Element, Int>
 	
@@ -104,7 +104,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Returns a single value by iteratively combining each element of the Set.
-	public func reduce<U>(var initial: U, combine: (U, T) -> U) -> U {
+	public func reduce<U>(initial: U, combine: (U, T) -> U) -> U {
 		return Swift.reduce(self, initial, combine)
 	}
 	
@@ -116,12 +116,12 @@ public struct CountedSet<T: Hashable> : Equatable {
 
 extension CountedSet : SequenceType {
 	
-	typealias Generator = GeneratorOf<T>
+	public typealias Generator = AnyGenerator<T>
 	
 	/// Creates a generator for the items of the set.
 	public func generate() -> Generator {
 		var generator = contents.keys.generate()
-		return Swift.GeneratorOf {
+		return anyGenerator {
 			return generator.next()
 		}
 	}
@@ -239,7 +239,7 @@ extension CountedSet { // : ExtensibleCollectionType {
 
 // MARK: Printable
 
-extension CountedSet : Printable, DebugPrintable {
+extension CountedSet : CustomStringConvertible, CustomDebugStringConvertible {
 	
 	public var description: String {
 		return "CountedSet(\(self.elements))"
