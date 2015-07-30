@@ -11,7 +11,7 @@ import XCTest
 class CountedSetTests: XCTestCase {
 	
 	func testOriginalTests() {
-		let vowelSet = CountedSet("aeiou")
+		let vowelSet : CountedSet<Character> = CountedSet(elements: "a", "e", "i", "o", "u")
 		let alphabetSet : CountedSet<Character> = CountedSet(elements: "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 		let emptySet = CountedSet<Int>()
 		

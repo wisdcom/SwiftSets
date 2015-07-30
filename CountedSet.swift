@@ -16,7 +16,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	// Create a Set from the given sequence.
 	public init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
 		self.contents = [:]
-		Swift.map(sequence) { self.add($0) }
+		sequence.map { self.add($0) }
 	}
 	
 	public init(elements: Element...) {
@@ -105,7 +105,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Returns a single value by iteratively combining each element of the Set.
 	public func reduce<U>(initial: U, combine: (U, T) -> U) -> U {
-		return Swift.reduce(self, initial, combine)
+		return self.reduce(initial, combine: combine)
 	}
 	
 	/// Returns an element from the set, likely the first.
@@ -213,7 +213,7 @@ extension CountedSet {
 
 extension CountedSet { // : ExtensibleCollectionType {
 	
-	typealias Index = CountedSetIndex<T>
+	public typealias Index = CountedSetIndex<T>
 	public var startIndex: Index { return CountedSetIndex(contents.startIndex) }
 	public var endIndex: Index { return CountedSetIndex(contents.endIndex) }
 	
@@ -233,7 +233,7 @@ extension CountedSet { // : ExtensibleCollectionType {
 	
 	/// Extends the Set by adding all the elements of `seq`.
 	public mutating func extend<S : SequenceType where S.Generator.Element == Element>(seq: S) {
-		Swift.map(seq) { self.add($0) }
+		seq.map { self.add($0) }
 	}
 }
 
