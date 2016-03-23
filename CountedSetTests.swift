@@ -105,7 +105,7 @@ class CountedSetTests: XCTestCase {
 			for _ in 1...timedSize {
 				let num = Int(arc4random_uniform(UInt32(timedSize)))
 				if timedSet.contains(num) {
-					++matchCount
+					matchCount += 1
 				}
 			}
 			return matchCount
@@ -126,7 +126,7 @@ class CountedSetTests: XCTestCase {
 			for _ in 1...timedSize {
 				let num = Int(arc4random_uniform(UInt32(timedSize)))
 				if timedArray.contains(num) {
-					++matchCount
+					matchCount += 1
 				}
 			}
 			return matchCount
