@@ -121,7 +121,7 @@ extension CountedSet : SequenceType {
 	/// Creates a generator for the items of the set.
 	public func generate() -> Generator {
 		var generator = contents.keys.generate()
-		return anyGenerator {
+		return AnyGenerator {
 			return generator.next()
 		}
 	}
