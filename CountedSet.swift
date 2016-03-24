@@ -190,15 +190,17 @@ extension CountedSet {
 	}
 	
 	/// Returns a new Set that contains all the elements of both this set and the set passed in.
-	public func setByUnionWithSet(var set: CountedSet<T>) -> CountedSet<T> {
-		set.extend(self)
-		return set
+	public func setByUnionWithSet(set: CountedSet<T>) -> CountedSet<T> {
+		var resultSet = set
+		resultSet.extend(self)
+		return resultSet
 	}
 	
 	/// Returns a new Set that contains only the elements in both this set and the set passed in.
-	public func setByIntersectionWithSet(var set: CountedSet<T>) -> CountedSet<T> {
-		set.intersectSet(self)
-		return set
+	public func setByIntersectionWithSet(set: CountedSet<T>) -> CountedSet<T> {
+		var resultSet = set
+		resultSet.intersectSet(self)
+		return resultSet
 	}
 	
 	/// Returns a new Set that contains only the elements in this set *not* also in the set passed in.
