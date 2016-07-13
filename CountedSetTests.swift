@@ -81,10 +81,10 @@ class CountedSetTests: XCTestCase {
 	}
 	
 	func testTiming() {
-		func timeBlock(block: () -> Int) -> (Int, NSTimeInterval) {
-			let start = NSDate()
+		func timeBlock(_ block: () -> Int) -> (Int, TimeInterval) {
+			let start = Date()
 			let result = block()
-			return (result, NSDate().timeIntervalSinceDate(start))
+			return (result, Date().timeIntervalSince(start))
 		}
 		
 		var timedSet = CountedSet<Int>()

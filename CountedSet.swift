@@ -14,7 +14,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	// Create a Set from the given sequence.
-	public init<S: SequenceType where S.Generator.Element == Element>(_ sequence: S) {
+	public init<S: Sequence where S.Iterator.Element == Element>(_ sequence: S) {
 		self.contents = [:]
 		for each in sequence { self.add(each) } // sequence.map { self.add($0) }
 	}
@@ -39,12 +39,12 @@ public struct CountedSet<T: Hashable> : Equatable {
 	public var elements: [Element] { return Array(self.contents.keys) }
 	
 	/// Returns `true` if the Set contains `element`.
-	public func contains(element: Element) -> Bool {
+	public func contains(_ element: Element) -> Bool {
 		return contents[element] != nil
 	}
 	
 	/// Returns the count for an element, 0 if not present.
-	public func countForElement(element: Element) -> Int {
+	public func countForElement(_ element: Element) -> Int {
 		return contents[element] ?? 0
 	}
 	
@@ -54,7 +54,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Add a single `newElement` to the Set.
-	public mutating func add(newElement: Element) {
+	public mutating func add(_ newElement: Element) {
 		if self.contains(newElement) {
 			contents[newElement]! += 1
 		} else {
@@ -63,23 +63,23 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Add multiple `newElements` to the Set.
-	public mutating func add(newElement: Element, _ anotherNewElement: Element, _ otherNewElements: Element...) {
+	public mutating func add(_ newElement: Element, _ anotherNewElement: Element, _ otherNewElements: Element...) {
 		add(newElement)
 		add(anotherNewElement)
 		for each in otherNewElements { self.add(each) } // otherNewElements.map { self.add($0) }
 	}
 	
 	/// Remove `element` from the Set.
-	public mutating func remove(element: Element, always: Bool = false) -> Element? {
+	public mutating func remove(_ element: Element, always: Bool = false) -> Element? {
 		if always {
-			return self.contents.removeValueForKey(element) != nil ? element : nil
+			return self.contents.removeValue(forKey: element) != nil ? element : nil
 		}
 		
 		if self.contains(element) {
 			contents[element]! -= 1
 			
 			if contents[element]! == 0 {
-				contents.removeValueForKey(element)
+				contents.removeValue(forKey: element)
 			}
 			return element
 			
@@ -94,17 +94,17 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Returns a new Set including only those elements `x` where `includeElement(x)` is true.
-	public func filter(includeElement: (T) -> Bool) -> CountedSet<T> {
+	public func filter(_ includeElement: (T) -> Bool) -> CountedSet<T> {
 		return CountedSet(self.contents.keys.filter(includeElement))
 	}
 	
 	/// Returns a new Set where each element `x` is transformed by `transform(x)`.
-	public func map<U>(transform: (T) -> U) -> CountedSet<U> {
+	public func map<U>(_ transform: (T) -> U) -> CountedSet<U> {
 		return CountedSet<U>(self.contents.keys.map(transform))
 	}
 	
 	/// Returns a single value by iteratively combining each element of the Set.
-	public func reduce<U>(initial: U, combine: (U, T) -> U) -> U {
+	public func reduce<U>(_ initial: U, combine: (U, T) -> U) -> U {
 		return self.reduce(initial, combine: combine)
 	}
 	
@@ -114,14 +114,14 @@ public struct CountedSet<T: Hashable> : Equatable {
 
 // MARK: SequenceType
 
-extension CountedSet : SequenceType {
+extension CountedSet : Sequence {
 	
-	public typealias Generator = AnyGenerator<T>
+	public typealias Iterator = AnyIterator<T>
 	
 	/// Creates a generator for the items of the set.
-	public func generate() -> Generator {
-		var generator = contents.keys.generate()
-		return AnyGenerator {
+	public func makeIterator() -> Iterator {
+		var generator = contents.keys.makeIterator()
+		return AnyIterator {
 			return generator.next()
 		}
 	}
@@ -141,12 +141,12 @@ extension CountedSet : ArrayLiteralConvertible {
 extension CountedSet {
 	
 	/// Returns `true` if the Set has the exact same members as `set`.
-	public func isEqualToSet(set: CountedSet<T>) -> Bool {
+	public func isEqualToSet(_ set: CountedSet<T>) -> Bool {
 		return self.contents == set.contents
 	}
 	
 	/// Returns `true` if the Set shares any members with `set`.
-	public func intersectsWithSet(set: CountedSet<T>) -> Bool {
+	public func intersectsWithSet(_ set: CountedSet<T>) -> Bool {
 		for elem in self {
 			if set.contains(elem) {
 				return true
@@ -156,7 +156,7 @@ extension CountedSet {
 	}
 	
 	/// Returns `true` if all members of the Set are part of `set`.
-	public func isSubsetOfSet(set: CountedSet<T>) -> Bool {
+	public func isSubsetOfSet(_ set: CountedSet<T>) -> Bool {
 		for elem in self {
 			if !set.contains(elem) {
 				return false
@@ -166,45 +166,45 @@ extension CountedSet {
 	}
 	
 	/// Returns `true` if all members of `set` are part of the Set.
-	public func isSupersetOfSet(set: CountedSet<T>) -> Bool {
+	public func isSupersetOfSet(_ set: CountedSet<T>) -> Bool {
 		return set.isSubsetOfSet(self)
 	}
 	
 	/// Modifies the Set to add all members of `set`.
-	public mutating func unionSet(set: CountedSet<T>) {
+	public mutating func unionSet(_ set: CountedSet<T>) {
 		for elem in set {
 			self.add(elem)
 		}
 	}
 	
 	/// Modifies the Set to remove any members also in `set`.
-	public mutating func subtractSet(set: CountedSet<T>, alwaysRemove: Bool = false) {
+	public mutating func subtractSet(_ set: CountedSet<T>, alwaysRemove: Bool = false) {
 		for elem in set {
 			self.remove(elem, always: alwaysRemove)
 		}
 	}
 	
 	/// Modifies the Set to include only members that are also in `set`.
-	public mutating func intersectSet(set: CountedSet<T>) {
+	public mutating func intersectSet(_ set: CountedSet<T>) {
 		self = self.filter { set.contains($0) }
 	}
 	
 	/// Returns a new Set that contains all the elements of both this set and the set passed in.
-	public func setByUnionWithSet(set: CountedSet<T>) -> CountedSet<T> {
+	public func setByUnionWithSet(_ set: CountedSet<T>) -> CountedSet<T> {
 		var resultSet = set
 		resultSet.extend(self)
 		return resultSet
 	}
 	
 	/// Returns a new Set that contains only the elements in both this set and the set passed in.
-	public func setByIntersectionWithSet(set: CountedSet<T>) -> CountedSet<T> {
+	public func setByIntersectionWithSet(_ set: CountedSet<T>) -> CountedSet<T> {
 		var resultSet = set
 		resultSet.intersectSet(self)
 		return resultSet
 	}
 	
 	/// Returns a new Set that contains only the elements in this set *not* also in the set passed in.
-	public func setBySubtractingSet(set: CountedSet<T>, alwaysRemove: Bool = false) -> CountedSet<T> {
+	public func setBySubtractingSet(_ set: CountedSet<T>, alwaysRemove: Bool = false) -> CountedSet<T> {
 		var newSet = self
 		newSet.subtractSet(set, alwaysRemove: alwaysRemove)
 		return newSet
@@ -224,17 +224,17 @@ extension CountedSet { // : ExtensibleCollectionType {
 		return contents.keys[i.index]
 	}
 	
-	public mutating func reserveCapacity(n: Int) {
+	public mutating func reserveCapacity(_ n: Int) {
 		// can't really do anything with this
 	}
 	
 	/// Adds newElement to the Set.
-	public mutating func append(newElement: Element) {
+	public mutating func append(_ newElement: Element) {
 		self.add(newElement)
 	}
 	
 	/// Extends the Set by adding all the elements of `seq`.
-	public mutating func extend<S : SequenceType where S.Generator.Element == Element>(seq: S) {
+	public mutating func extend<S : Sequence where S.Iterator.Element == Element>(_ seq: S) {
 		for each in seq { self.add(each) } // seq.map { self.add($0) }
 	}
 }
@@ -254,11 +254,11 @@ extension CountedSet : CustomStringConvertible, CustomDebugStringConvertible {
 
 // MARK: Operators
 
-public func +=<T>(inout lhs: CountedSet<T>, rhs: T) {
+public func +=<T>(lhs: inout CountedSet<T>, rhs: T) {
 	lhs.add(rhs)
 }
 
-public func +=<T>(inout lhs: CountedSet<T>, rhs: CountedSet<T>) {
+public func +=<T>(lhs: inout CountedSet<T>, rhs: CountedSet<T>) {
 	lhs.unionSet(rhs)
 }
 
@@ -284,7 +284,7 @@ public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 	//		return CountedSetIndex(self.index.predecessor())
 	//	}
 	public func successor() -> CountedSetIndex<T> {
-		return CountedSetIndex(self.index.successor())
+		return CountedSetIndex(<#T##Dictionary corresponding to your index##Dictionary#>.index(after: self.index))
 	}
 }
 
