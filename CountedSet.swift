@@ -180,7 +180,7 @@ extension CountedSet {
 	/// Modifies the Set to remove any members also in `set`.
 	public mutating func subtractSet(_ set: CountedSet<T>, alwaysRemove: Bool = false) {
 		for elem in set {
-			self.remove(elem, always: alwaysRemove)
+			_ = self.remove(elem, always: alwaysRemove)
 		}
 	}
 	
