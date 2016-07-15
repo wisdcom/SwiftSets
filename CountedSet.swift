@@ -283,9 +283,9 @@ public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 	//	public func predecessor() -> CountedSetIndex<T> {
 	//		return CountedSetIndex(self.index.predecessor())
 	//	}
-	public func successor() -> CountedSetIndex<T> {
-		return CountedSetIndex(<#T##Dictionary corresponding to your index##Dictionary#>.index(after: self.index))
-	}
+//	public func successor() -> CountedSetIndex<T> {
+//		return CountedSetIndex(<#T##Dictionary corresponding to your index##Dictionary#>.index(after: self.index))
+//	}
 }
 
 public func ==<T: Hashable>(lhs: CountedSetIndex<T>, rhs: CountedSetIndex<T>) -> Bool {
