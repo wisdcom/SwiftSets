@@ -6,7 +6,7 @@ import Foundation
 public struct CountedSet<T: Hashable> : Equatable {
 	public typealias Element = T
 	
-	private var contents: Dictionary<Element, Int>
+	fileprivate var contents: Dictionary<Element, Int>
 	
 	// Create an empty Set.
 	public init() {
@@ -14,7 +14,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	// Create a Set from the given sequence.
-	public init<S: Sequence where S.Iterator.Element == Element>(_ sequence: S) {
+	public init<S: Sequence>(_ sequence: S) where S.Iterator.Element == Element {
 		self.contents = [:]
 		for each in sequence { self.add(each) } // sequence.map { self.add($0) }
 	}
@@ -216,13 +216,17 @@ extension CountedSet {
 extension CountedSet { // : ExtensibleCollectionType {
 	
 	public typealias Index = CountedSetIndex<T>
-	public var startIndex: Index { return CountedSetIndex(contents.startIndex) }
-	public var endIndex: Index { return CountedSetIndex(contents.endIndex) }
+//	public var startIndex: Index {
+//		return CountedSetIndex(contents.startIndex)
+//	}
+//	public var endIndex: Index {
+//		return CountedSetIndex(contents.endIndex)
+//	}
 	
 	/// Returns the element of the Set at the specified index.
-	public subscript(i: Index) -> Element {
-		return contents.keys[i.index]
-	}
+//	public subscript(i: Index) -> Element {
+//		return contents.keys[i.index]
+//	}
 	
 	public mutating func reserveCapacity(_ n: Int) {
 		// can't really do anything with this
@@ -234,7 +238,7 @@ extension CountedSet { // : ExtensibleCollectionType {
 	}
 	
 	/// Extends the Set by adding all the elements of `seq`.
-	public mutating func extend<S : Sequence where S.Iterator.Element == Element>(_ seq: S) {
+	public mutating func extend<S : Sequence>(_ seq: S) where S.Iterator.Element == Element {
 		for each in seq { self.add(each) } // seq.map { self.add($0) }
 	}
 }
@@ -288,6 +292,6 @@ public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 //	}
 }
 
-public func ==<T: Hashable>(lhs: CountedSetIndex<T>, rhs: CountedSetIndex<T>) -> Bool {
-	return lhs.index == rhs.index
-}
+//public func ==<T: Hashable>(lhs: CountedSetIndex<T>, rhs: CountedSetIndex<T>) -> Bool {
+//	return lhs.index == rhs.index
+//}
