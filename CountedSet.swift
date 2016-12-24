@@ -129,7 +129,7 @@ extension CountedSet : Sequence {
 
 // MARK: ArrayLiteralConvertible
 
-extension CountedSet : ArrayLiteralConvertible {
+extension CountedSet : ExpressibleByArrayLiteral {
 	
 	public init(arrayLiteral elements: Element...) {
 		self.init(elements)
