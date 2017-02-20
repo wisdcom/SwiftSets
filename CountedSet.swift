@@ -110,6 +110,50 @@ public struct CountedSet<T: Hashable> : Equatable {
 	
 	/// Returns an element from the set, likely the first.
 	public func anyElement() -> Element? { return elements.first }
+	
+	
+	//
+	
+	
+	/// Merges with a second set, limiting the counts to the greater of the two.
+	/// e.g.
+	///
+	///			let set1 = [ a(3), b(2), c(1) ]
+	///			let set2 = [ a(1), b(5), d(1) ]
+	///			set1.capacityMerge(with: set2)
+	///			// set1 is now [ a(3), b(5), c(1), d(1) ]
+	///
+	/// - Parameter secondSet: the set to merge with
+	///
+	public mutating func capacityMerge(with secondSet: CountedSet<T>) {
+		
+		for eachElement in secondSet {
+			let countInFirstSet  = self.countForElement(eachElement)
+			let countInSecondSet = secondSet.countForElement(eachElement)
+			
+			let underInFirstSet = countInSecondSet - countInFirstSet
+			if underInFirstSet >= 1 {
+				for _ in 1...underInFirstSet {
+					self.add(eachElement)
+				}
+			}
+		}
+	}
+	
+	/// Returns a new array with elements repeating according to the counts.
+	/// e.g. [ a(3), b(2), c(1) ] -> [ a, a, a, b, b, c ]
+	///
+	public func expanded() -> Array<Element> {
+		var expanded: Array<Element> = []
+		
+		for eachElement in self {
+			let elementCount = countForElement(eachElement)
+			for _ in 1...elementCount {
+				expanded.append(eachElement)
+			}
+		}
+		return expanded
+	}
 }
 
 // MARK: SequenceType

@@ -80,6 +80,29 @@ class CountedSetTests: XCTestCase {
 //		println()
 	}
 	
+	func testSuppFuncs() {
+		
+		// capacityMerge
+		var s2_1: CountedSet<Character> = []
+		var s2_2: CountedSet<Character> = []
+		s2_1.add("A", "A", "A", "B", "B",                "C")
+		s2_2.add("A",           "B", "B", "B", "B", "B",      "D")
+		s2_1.capacityMerge(with: s2_2)
+		XCTAssert(s2_1.countForElement("A") == 3)
+		XCTAssert(s2_1.countForElement("B") == 5)
+		XCTAssert(s2_1.countForElement("C") == 1)
+		XCTAssert(s2_1.countForElement("D") == 1)
+		
+		// expanded
+		var s1_1: CountedSet<Character> = []
+		s1_1.add("A", "A", "A", "B", "B", "C")
+		let a1_1 = s1_1.expanded()
+		XCTAssert(a1_1.count == 6)
+		XCTAssert(a1_1.filter{ $0 == "A" }.count == 3)
+		XCTAssert(a1_1.filter{ $0 == "B" }.count == 2)
+		XCTAssert(a1_1.filter{ $0 == "C" }.count == 1)
+	}
+	
 	func testTiming() {
 		func timeBlock(_ block: () -> Int) -> (Int, TimeInterval) {
 			let start = Date()
