@@ -104,9 +104,9 @@ public struct CountedSet<T: Hashable> : Equatable {
 	}
 	
 	/// Returns a single value by iteratively combining each element of the Set.
-	public func reduce<U>(_ initial: U, combine: (U, T) -> U) -> U {
-		return self.reduce(initial, combine: combine)
-	}
+//	public func reduce<U>(_ initial: U, combine: (U, T) -> U) -> U {
+//		return self.reduce(initial, combine: combine)
+//	}
 	
 	/// Returns an element from the set, likely the first.
 	public func anyElement() -> Element? { return elements.first }
