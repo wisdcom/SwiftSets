@@ -325,6 +325,7 @@ public func ==<T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
 public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 	
 	private var index: DictionaryIndex<T, Int>
+	
 	private init(_ dictionaryIndex: DictionaryIndex<T, Int>) {
 		self.index = dictionaryIndex
 	}
