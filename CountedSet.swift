@@ -298,26 +298,25 @@ extension CountedSet : CustomStringConvertible, CustomDebugStringConvertible {
 	public var debugDescription: String {
 		return description
 	}
+	
+	// MARK: Operators
+	
+	public static func += <T>(lhs: inout CountedSet<T>, rhs: T) {
+		lhs.add(rhs)
+	}
+	
+	public static func += <T>(lhs: inout CountedSet<T>, rhs: CountedSet<T>) {
+		lhs.unionSet(rhs)
+	}
+	
+	public static func + <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> CountedSet<T> {
+		return lhs.setByUnionWithSet(rhs)
+	}
+	
+	public static func == <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
+		return lhs.isEqualToSet(rhs)
+	}
 }
-
-// MARK: Operators
-
-public func +=<T>(lhs: inout CountedSet<T>, rhs: T) {
-	lhs.add(rhs)
-}
-
-public func +=<T>(lhs: inout CountedSet<T>, rhs: CountedSet<T>) {
-	lhs.unionSet(rhs)
-}
-
-public func +<T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> CountedSet<T> {
-	return lhs.setByUnionWithSet(rhs)
-}
-
-public func ==<T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
-	return lhs.isEqualToSet(rhs)
-}
-
 
 // MARK: - CountedSetIndex
 
