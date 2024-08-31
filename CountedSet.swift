@@ -111,9 +111,7 @@ public struct CountedSet<T: Hashable> : Equatable {
 	/// Returns an element from the set, likely the first.
 	public func anyElement() -> Element? { return elements.first }
 	
-	
 	//
-	
 	
 	/// Merges with a second set, limiting the counts to the greater of the two.
 	/// e.g.
@@ -319,7 +317,6 @@ extension CountedSet : CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 // MARK: - CountedSetIndex
-
 
 public struct CountedSetIndex<T: Hashable> { // : BidirectionalIndexType {
 	
