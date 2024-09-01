@@ -299,21 +299,23 @@ extension CountedSet : CustomStringConvertible, CustomDebugStringConvertible {
 	
 	// MARK: Operators
 	
-	public static func += <T>(lhs: inout CountedSet<T>, rhs: T) {
-		lhs.add(rhs)
-	}
+	// 2024/08/31: phasing out: unused parts causing warnings are commented out
 	
-	public static func += <T>(lhs: inout CountedSet<T>, rhs: CountedSet<T>) {
-		lhs.unionSet(rhs)
-	}
-	
-	public static func + <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> CountedSet<T> {
-		return lhs.setByUnionWithSet(rhs)
-	}
-	
-	public static func == <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
-		return lhs.isEqualToSet(rhs)
-	}
+//	public static func += <T>(lhs: inout CountedSet<T>, rhs: T) {
+//		lhs.add(rhs)
+//	}
+//	
+//	public static func += <T>(lhs: inout CountedSet<T>, rhs: CountedSet<T>) {
+//		lhs.unionSet(rhs)
+//	}
+//	
+//	public static func + <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> CountedSet<T> {
+//		return lhs.setByUnionWithSet(rhs)
+//	}
+//	
+//	public static func == <T>(lhs: CountedSet<T>, rhs: CountedSet<T>) -> Bool {
+//		return lhs.isEqualToSet(rhs)
+//	}
 }
 
 // MARK: - CountedSetIndex
